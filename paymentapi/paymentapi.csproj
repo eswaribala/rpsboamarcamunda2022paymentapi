@@ -7,14 +7,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Processes\walletprocess.bpmn" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Processes\walletprocess.bpmn">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Camunda.Api.Client" Version="2.6.0" />
+    <PackageReference Include="Camunda.Worker" Version="0.13.4" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Models\" />
     <Folder Include="Bpmns\" />
-    <Folder Include="Handlers\" />
-    <Folder Include="Processes\" />
   </ItemGroup>
 
 </Project>
