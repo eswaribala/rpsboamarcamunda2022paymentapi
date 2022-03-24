@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using paymentapi.Models;
+using System.Net.Http.Headers;
 
 namespace paymentapi.Controllers
 {
@@ -73,32 +74,16 @@ namespace paymentapi.Controllers
             //return Ok(this._client.ProcessDefinitions);
         }
         [HttpPost("tasks")]
-        public  async Task<IActionResult> GetTasksList()
+        public async Task<List<TaskList>> GetTasksList()
         {
-            using var client = new HttpClient();
+            using (var client = new HttpClient()) {
 
-            var url = this._configuration["RestApiUri"] + "task";
-            var result = await client.GetAsync(url);
-            /*
-            var contentStream = await result.Content.ReadAsStreamAsync();
-
-            using var streamReader = new StreamReader(contentStream);
-            using var jsonReader = new JsonTextReader(streamReader);
-
-            JsonSerializer serializer = new JsonSerializer();
-            TaskList TaskList = null;
-
-            try
-            {
-               TaskList=  serializer.Deserialize<TaskList>(jsonReader);
+                var url = this._configuration["RestApiUri"] + "task";
+                var response = await client.GetStringAsync(url);
+                return JsonConvert.DeserializeObject<List<TaskList>>(response);
             }
-            catch (JsonReaderException)
-            {
-                Console.WriteLine("Invalid JSON.");
-            }
-            return TaskList;
-            */
-            return Ok(result.Content.ReadAsStringAsync());
+               
+            
         }
 
     }
