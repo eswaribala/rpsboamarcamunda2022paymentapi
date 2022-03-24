@@ -5,13 +5,18 @@
       <bpmn:outgoing>Flow_03tp2pk</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:endEvent id="Event_1ozhcwg">
-      <bpmn:incoming>Flow_1xo8o97</bpmn:incoming>
+      <bpmn:incoming>Flow_0hr1wol</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_1xo8o97" sourceRef="Activity_Wallet" targetRef="Event_1ozhcwg" />
+    <bpmn:sequenceFlow id="Flow_1xo8o97" sourceRef="Activity_Wallet" targetRef="Activity_Kafka" />
     <bpmn:sequenceFlow id="Flow_03tp2pk" sourceRef="StartEvent_1" targetRef="Activity_Wallet" />
-    <bpmn:serviceTask id="Activity_Wallet" name="Wallet Activity" camunda:type="external" camunda:topic="wallet">
+    <bpmn:serviceTask id="Activity_Wallet" name="Verify Wallet Balance " camunda:type="external" camunda:topic="wallet">
       <bpmn:incoming>Flow_03tp2pk</bpmn:incoming>
       <bpmn:outgoing>Flow_1xo8o97</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0hr1wol" sourceRef="Activity_Kafka" targetRef="Event_1ozhcwg" />
+    <bpmn:serviceTask id="Activity_Kafka" name="Publish Wallet Balance" camunda:type="external" camunda:topic="walletpublish">
+      <bpmn:incoming>Flow_1xo8o97</bpmn:incoming>
+      <bpmn:outgoing>Flow_0hr1wol</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:textAnnotation id="TextAnnotation_1qudpi7">
       <bpmn:text>Wallet Data</bpmn:text>
@@ -20,25 +25,32 @@
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_Wallet">
-      <bpmndi:BPMNShape id="TextAnnotation_1qudpi7_di" bpmnElement="TextAnnotation_1qudpi7" bioc:stroke="#8e24aa" bioc:fill="#e1bee7" color:background-color="#e1bee7" color:border-color="#8e24aa">
-        <dc:Bounds x="370" y="60" width="100" height="30" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Flow_1xo8o97_di" bpmnElement="Flow_1xo8o97">
-        <di:waypoint x="440" y="177" />
-        <di:waypoint x="532" y="177" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_03tp2pk_di" bpmnElement="Flow_03tp2pk">
         <di:waypoint x="215" y="177" />
         <di:waypoint x="340" y="177" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1xo8o97_di" bpmnElement="Flow_1xo8o97">
+        <di:waypoint x="440" y="177" />
+        <di:waypoint x="500" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0hr1wol_di" bpmnElement="Flow_0hr1wol">
+        <di:waypoint x="600" y="177" />
+        <di:waypoint x="742" y="177" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1" bioc:stroke="#43a047" bioc:fill="#c8e6c9" color:background-color="#c8e6c9" color:border-color="#43a047">
         <dc:Bounds x="179" y="159" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1ozhcwg_di" bpmnElement="Event_1ozhcwg" bioc:stroke="#e53935" bioc:fill="#ffcdd2" color:background-color="#ffcdd2" color:border-color="#e53935">
-        <dc:Bounds x="532" y="159" width="36" height="36" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_15zn2id_di" bpmnElement="Activity_Wallet" bioc:stroke="#fb8c00" bioc:fill="#ffe0b2" color:background-color="#ffe0b2" color:border-color="#fb8c00">
         <dc:Bounds x="340" y="137" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_1qudpi7_di" bpmnElement="TextAnnotation_1qudpi7" bioc:stroke="#8e24aa" bioc:fill="#e1bee7" color:background-color="#e1bee7" color:border-color="#8e24aa">
+        <dc:Bounds x="370" y="60" width="100" height="30" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1ozhcwg_di" bpmnElement="Event_1ozhcwg" bioc:stroke="#e53935" bioc:fill="#ffcdd2" color:background-color="#ffcdd2" color:border-color="#e53935">
+        <dc:Bounds x="742" y="159" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1dtnba3_di" bpmnElement="Activity_Kafka" bioc:stroke="#fb8c00" bioc:fill="#ffe0b2" color:background-color="#ffe0b2" color:border-color="#fb8c00">
+        <dc:Bounds x="500" y="137" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Association_1eyf7m6_di" bpmnElement="Association_1eyf7m6">
         <di:waypoint x="402" y="137" />

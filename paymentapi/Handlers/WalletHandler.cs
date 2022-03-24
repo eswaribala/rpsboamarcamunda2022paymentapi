@@ -19,10 +19,9 @@ namespace paymentapi.Handlers
             {
                 _logger.LogInformation($"Payment processing..........");
                 //Mimicking operation
-                Task.Delay(500).Wait();
-                            
+                Task.Delay(500).Wait();                           
 
-                _logger.LogInformation($"Payment processing, { externalTask.Variables["walletBalance"].Value} ");
+                _logger.LogInformation($"Payment processing, {externalTask.Variables["walletBalance"].Value} ");
                 return new CompleteResult();
             }
             catch (Exception ex)
