@@ -72,6 +72,34 @@ namespace paymentapi.Controllers
             return Ok(result.Content.ReadAsStringAsync());
             //return Ok(this._client.ProcessDefinitions);
         }
+        [HttpPost("tasks")]
+        public  async Task<IActionResult> GetTasksList()
+        {
+            using var client = new HttpClient();
+
+            var url = this._configuration["RestApiUri"] + "task";
+            var result = await client.GetAsync(url);
+            /*
+            var contentStream = await result.Content.ReadAsStreamAsync();
+
+            using var streamReader = new StreamReader(contentStream);
+            using var jsonReader = new JsonTextReader(streamReader);
+
+            JsonSerializer serializer = new JsonSerializer();
+            TaskList TaskList = null;
+
+            try
+            {
+               TaskList=  serializer.Deserialize<TaskList>(jsonReader);
+            }
+            catch (JsonReaderException)
+            {
+                Console.WriteLine("Invalid JSON.");
+            }
+            return TaskList;
+            */
+            return Ok(result.Content.ReadAsStringAsync());
+        }
 
     }
     public enum MyBPMNProcess
