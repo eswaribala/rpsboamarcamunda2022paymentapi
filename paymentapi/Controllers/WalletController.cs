@@ -12,11 +12,13 @@ namespace paymentapi.Controllers
     public class WalletController : ControllerBase
     {
         private readonly ILogger<WalletController> _logger;
+        private IConfiguration _configuration;
         private CamundaClient _client;
-        public WalletController(ILogger<WalletController> logger)
+        public WalletController(ILogger<WalletController> logger,IConfiguration configuration)
         {
+            this._configuration = configuration;
             this._logger = logger;
-            _client = CamundaClient.Create("http://localhost:8080/engine-rest/");
+            _client = CamundaClient.Create(this._configuration["RestApiUri"]);
         }
         [HttpGet("startProcess")]
         public IActionResult StartProcess(MyBPMNProcess myBPMNProcess)
