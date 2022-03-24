@@ -21,8 +21,8 @@ namespace paymentapi.Controllers
             this._logger = logger;
             _client = CamundaClient.Create(this._configuration["RestApiUri"]);
         }
-        [HttpGet("startProcess")]
-        public IActionResult StartProcess(MyBPMNProcess myBPMNProcess)
+        [HttpPost("startProcess")]
+        public IActionResult StartProcess([FromBody] Wallet wallet,MyBPMNProcess myBPMNProcess)
         {
             _logger.LogInformation("Starting the sample Camunda process...");
             try
@@ -32,17 +32,17 @@ namespace paymentapi.Controllers
                 //Creating process parameters
                 StartProcessInstance processParams;
 
-                Wallet wallet = new Wallet
-                {
-                   WalletId=29469,
-                   WalletBalance=464724,
-                   WalletName="HDFC Wallet",
-                   WalletVersion=1
-                };
+                //json to string
+                String message = JsonConvert.SerializeObject(wallet);
+                //string to c# pobject
+                Wallet Wallet =JsonConvert.DeserializeObject<Wallet>(message);
+
+
 
                 processParams = new StartProcessInstance()
-                   
-                   .SetVariable("wallet", JsonConvert.SerializeObject(wallet));
+
+                   .SetVariable("walletId", Wallet.WalletId)
+                   .SetVariable("walletBalance", Wallet.WalletBalance);                 
 
                 _logger.LogInformation($"Camunda process to demonstrate Saga based orchestrator started..........");
 
@@ -66,9 +66,13 @@ namespace paymentapi.Controllers
         //camunda rest api calls
         public async Task<IActionResult> GetProcessDefinitions()
         {
+
+            
+
             using var client = new HttpClient();
 
             var url = this._configuration["RestApiUri"] + "process-definition";
+            //synchronous call
             var result = await client.GetAsync(url);
             return Ok(result.Content.ReadAsStringAsync());
             //return Ok(this._client.ProcessDefinitions);
