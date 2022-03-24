@@ -16,6 +16,7 @@ namespace paymentapi.Controllers
         public WalletController(ILogger<WalletController> logger)
         {
             this._logger = logger;
+            _client = CamundaClient.Create("http://localhost:8080/engine-rest/");
         }
         [HttpGet("startProcess")]
         public IActionResult StartProcess(MyBPMNProcess myBPMNProcess)
@@ -44,12 +45,12 @@ namespace paymentapi.Controllers
 
 
                 //Startinng the process
-                //var proceStartResult = _client.ProcessDefinitions.ByKey(myBPMNProcess.ToString())
-                //    .StartProcessInstance(processParams);
+                var proceStartResult = _client.ProcessDefinitions.ByKey(myBPMNProcess.ToString())
+                    .StartProcessInstance(processParams);
 
-                return Ok("Done");
+                //return Ok("Done");
 
-                //return Ok(proceStartResult.Result.DefinitionId);
+                return Ok(proceStartResult.Result.DefinitionId);
             }
             catch (Exception ex)
             {
