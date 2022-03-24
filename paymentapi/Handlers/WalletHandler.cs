@@ -20,17 +20,10 @@ namespace paymentapi.Handlers
                 _logger.LogInformation($"Payment processing..........");
                 //Mimicking operation
                 Task.Delay(500).Wait();
-                //Wallet wallet = (Wallet)externalTask.Variables["wallet"].Value;
+                            
 
-               // return new CompleteResult();
-
-                return new CompleteResult
-                {
-                    Variables = new Dictionary<string, Variable>
-                    {
-                        ["walletBalance"] = new Variable(externalTask.Variables["walletBalance"], VariableType.Long)
-                    }
-                };
+                _logger.LogInformation($"Payment processing, { externalTask.Variables["walletBalance"].Value} ");
+                return new CompleteResult();
             }
             catch (Exception ex)
             {
