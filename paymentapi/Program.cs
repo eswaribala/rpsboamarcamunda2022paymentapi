@@ -21,7 +21,8 @@ builder.Services.AddExternalTaskClient()
         client.BaseAddress = new Uri(configuration["RestApiUri"]);
     });
 builder.Services.AddCamundaWorker("PreparePaymentCamundaWorker", 1)
-    .AddHandler<WalletHandler>();
+    .AddHandler<WalletHandler>()
+    .AddHandler<WalletKafkaHandler>();
 
 
 var app = builder.Build();

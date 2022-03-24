@@ -17,8 +17,9 @@ namespace paymentapi.Handlers
         }
         public async  Task<IExecutionResult> HandleAsync(ExternalTask externalTask, CancellationToken cancellationToken)
         {
-           string topicName= this._configuration["TopicName"];
-            string message = externalTask.Variables["walletBalace"].Value.ToString();
+            _logger.LogInformation("Wallet Kafka handler is called from Camunda...");
+            string topicName= this._configuration["TopicName"];
+            string message = externalTask.Variables["walletBalance"].Value.ToString();
 
             ProcessOrder(topicName, message);
             return new CompleteResult();
