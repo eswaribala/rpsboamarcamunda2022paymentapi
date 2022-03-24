@@ -1,9 +1,9 @@
 ﻿namespace paymentapi.Bpmns
 {
-    public class BpmDeployService : IHostedService
+    public class BpmnDeployService : IHostedService
     {
         private readonly BpmnService bpmnService;
-        public BpmDeployService(BpmnService bpmnService)
+        public BpmnDeployService(BpmnService bpmnService)
         {
             this.bpmnService = bpmnService;
         }

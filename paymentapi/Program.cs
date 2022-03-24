@@ -1,3 +1,8 @@
+using Camunda.Worker;
+using Camunda.Worker.Client;
+using paymentapi.Bpmns;
+using paymentapi.Handlers;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +11,16 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+//Camunda worker startUp
+builder.Services.AddSingleton(_ => new BpmnService("http://localhost:8080/engine-rest/"));
+builder.Services.AddHostedService<BpmnDeployService>();
+builder.Services.AddExternalTaskClient()
+    .ConfigureHttpClient((provider, client) =>
+    {
+        client.BaseAddress = new Uri("http://localhost:8080/engine-rest/");
+    });
+builder.Services.AddCamundaWorker("PreparePaymentCamundaWorker", 1)
+    .AddHandler<WalletHandler>();
 
 var app = builder.Build();
 
