@@ -61,6 +61,18 @@ namespace paymentapi.Controllers
             }
         }
 
+        [HttpGet("processDefinitions")]
+        //camunda rest api calls
+        public async Task<IActionResult> GetProcessDefinitions()
+        {
+            using var client = new HttpClient();
+
+            var url = this._configuration["RestApiUri"] + "process-definition";
+            var result = await client.GetAsync(url);
+            return Ok(result.Content.ReadAsStringAsync());
+            //return Ok(this._client.ProcessDefinitions);
+        }
+
     }
     public enum MyBPMNProcess
     {
